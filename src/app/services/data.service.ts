@@ -13,6 +13,8 @@ database:any = {
   constructor() { }
   //register
   register(uname:any, acno:any, password:any){
+
+    // var acno=parseInt(acno1)
     let database = this.database
 
     if(acno in database){
@@ -32,4 +34,55 @@ database:any = {
        
     }
   }
+
+//login
+login(acno:any,pswd:any){
+    
+  // var acno = this.acno 
+  // var pswd = this.pswd
+
+  let database = this.database
+
+  if(acno in database){
+
+    if(pswd == database[acno]["password"]){
+       //already exist in db
+      return true
+    }
+    else{
+      alert("Incorrect password!!!")
+      return false
+    }
+
+  }
+  else{
+    alert("User doesnot exist!!!!")
+    return false
+  }
+
 }
+
+//deposit
+deposit(acno:any,pswd:any,amt:any){
+
+  var amount = parseInt(amt)
+
+  let database = this.database
+
+  if(acno in database){
+    if(pswd == database[acno]["password"]){
+      database[acno]["balance"] +=amount
+      return database[acno]["balance"]
+    }
+    else{
+      alert("Incorrect password!!!")
+      return false
+    }
+  }
+else{
+  alert("User doesnot exist!!!")
+  return false
+    }
+  }
+}
+

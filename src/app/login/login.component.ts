@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from '../services/data.service';
+
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,7 @@ export class LoginComponent implements OnInit {
     1001:{acno:1001,uname:"vineeth",password:1001,balance:3000},
     1002:{acno:1002,uname:"shyam",password:1002,balance:7000},
   }
-  constructor(private router:Router) { }
+  constructor(private router:Router,private ds:DataService) { }
 
   ngOnInit(): void {
   }
@@ -36,36 +38,48 @@ export class LoginComponent implements OnInit {
    }
 
    //login -using event binding/ two way binding
-  login(){
+//   login(){
     
-    var acno = this.acno
-    console.log(acno);
+//     var acno = this.acno 
+//     var pswd = this.pswd
+
+//     let database = this.ds.database
+
+//     if(acno in database){
+
+//       if(pswd == database[acno]["password"]){
+//          alert("Login successfull!!!")
+//          this.router.navigateByUrl("dashboard")
+//       }
+//       else{
+//         alert("Incorrect password!!!")
+//       }
+
+//     }
+//     else{
+//       alert("User doesnot exist!!!!")
+//     }
+
+//   }
+
+// }
+
+//login -for loging in using data service
+login(){
     
-    var pswd = this.pswd
+  var acno = this.acno 
+  var pswd = this.pswd
+//call login in dataService
+ const result = this.ds.login(acno,pswd)
 
-    let database = this.database
-
-    if(acno in database){
-
-      if(pswd == database[acno]["password"]){
-         alert("Login successfull!!!")
-         this.router.navigateByUrl("dashboard")
-      }
-      else{
-        alert("Incorrect password!!!")
-      }
-
-    }
-    else{
-      alert("User doesnot exist!!!!")
-    }
-
-  }
-
+ if(result){
+  alert("Login successfull!!!")
+  this.router.navigateByUrl("dashboard")
+ }
+}
 }
 
-
-//login using referencing variable #
+//login using template referencing variable #
 // login(a:any,p:any){
 
 // console.log(a.value)

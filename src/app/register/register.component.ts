@@ -31,6 +31,7 @@ export class RegisterComponent implements OnInit {
     }
     else{
       alert("Account already exist.. please login")
+      this.router.navigateByUrl("")
     }
   
   }
