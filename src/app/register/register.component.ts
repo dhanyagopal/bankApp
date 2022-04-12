@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 
@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
 
   //registerForm Model(Reactive Forms),this is like variable so declared above constructor
   registerForm =this.fb.group({
-     uname:[''],
+     uname:['',[Validators.required,Validators.pattern('[a-zA-Z ]*')]],
      acno:[''],
      pswd:['']
   })
@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit {
   //   }
   
   // }
-
+  
 
   //register using registerForms method
   register(){
@@ -52,6 +52,8 @@ export class RegisterComponent implements OnInit {
     var pswd = this.registerForm.value.pswd
     var uname = this.registerForm.value.uname
     
+    if(this.registerForm.valid){
+
     const result = this.db.register(uname,acno,pswd)
 
     if(result){
@@ -62,7 +64,9 @@ export class RegisterComponent implements OnInit {
       alert("Account already exist.. please login")
       this.router.navigateByUrl("")
     }
-  
   }
-
+  else{
+    alert("invalid form")
+  }
+ }
 }
