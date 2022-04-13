@@ -5,6 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class DataService {
 
+  //to get user name from db
+  currentUser:any
+
 database:any = {
     1000:{acno:1000,uname:"arun",password:1000,balance:5000},
     1001:{acno:1001,uname:"vineeth",password:1001,balance:3000},
@@ -46,6 +49,7 @@ login(acno:any,pswd:any){
   if(acno in database){
 
     if(pswd == database[acno]["password"]){
+      this.currentUser = database[acno]["uname"]//to send user name to dashboard.ts
        //already exist in db
       return true
     }
