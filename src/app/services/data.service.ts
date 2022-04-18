@@ -7,11 +7,12 @@ export class DataService {
 
   //to get user name from db
   currentUser:any
+  currentAcno:any//var declared for transaction()
 
 database:any = {
-    1000:{acno:1000,uname:"arun",password:1000,balance:5000},
-    1001:{acno:1001,uname:"vineeth",password:1001,balance:3000},
-    1002:{acno:1002,uname:"shyam",password:1002,balance:7000},
+    1000:{acno:1000,uname:"arun",password:1000,balance:5000,transaction:[]},
+    1001:{acno:1001,uname:"vineeth",password:1001,balance:3000,transaction:[]},
+    1002:{acno:1002,uname:"shyam",password:1002,balance:7000,transaction:[]},
   }
   constructor() { }
   //register
@@ -30,7 +31,8 @@ database:any = {
         acno,
         uname,
         password,
-        balance:0
+        balance:0,
+        transaction:[]
       }
        console.log(database);
        return true
@@ -50,6 +52,7 @@ login(acno:any,pswd:any){
 
     if(pswd == database[acno]["password"]){
       this.currentUser = database[acno]["uname"]//to send user name to dashboard.ts
+      this.currentAcno = acno //to insert the current logined user acno into the var currentAcno(to display in transction history )
        //already exist in db
       return true
     }
@@ -76,6 +79,12 @@ deposit(acno:any,pswd:any,amt:any){
   if(acno in database){
     if(pswd == database[acno]["password"]){
       database[acno]["balance"] +=amount
+      database[acno]["transaction"].push({
+        type:"CREDIT",
+        amount:amount    
+      })
+     // console.log(database);
+      
       return database[acno]["balance"]
     }
     else{
@@ -100,6 +109,12 @@ withdraw(acno:any,pswd:any,amt:any){
     if(pswd == database[acno]["password"]){
         if(database[acno]["balance"]>amount){
           database[acno]["balance"] -=amount
+          database[acno]["transaction"].push({
+            type:"DEBIT",
+            amount:amount    
+          })
+          //console.log(database);
+          
           return database[acno]["balance"]
         }
         else{
@@ -117,5 +132,13 @@ else{
   return false
     }
   }
+
+  //transaction-to get transaction history
+  transaction(acno:any){
+  return this.database[acno].transaction // to return the transaction array of corresponding acno to transaction.html page
+
+  }
+
+
 }
 
