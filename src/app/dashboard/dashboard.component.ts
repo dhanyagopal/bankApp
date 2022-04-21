@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 
 @Component({
@@ -11,14 +12,15 @@ export class DashboardComponent implements OnInit {
 
   //for displaying user name in dashboard(html)
   user:any
+  acno:any
 
-  acno=""
-  pswd=""
-  amount=""
+  // acno=""
+  // pswd=""
+  // amount=""
 
-  acno1=""
-  pswd1=""
-  amount1=""
+  // acno1=""
+  // pswd1=""
+  // amount1=""
 
   //deposit model
   depositForm = this.fb.group({
@@ -34,12 +36,19 @@ export class DashboardComponent implements OnInit {
   amount1:['',[Validators.required,Validators.pattern('[0-9]*')]]
   })
 
-  constructor(private ds:DataService,private fb:FormBuilder) {
-   this.user=this.ds.currentUser //to pass username to dashboard(html)page while loading the page,add this inside constructor
+  loginDate:any
 
+  constructor(private ds:DataService,private fb:FormBuilder,private router:Router) {
+   this.user=this.ds.currentUser //to pass username to dashboard(html)page while loading the page,add this inside constructor
+   this.loginDate= new Date()
    }
 
+   
   ngOnInit(): void {
+    if(!localStorage.getItem("currentAcno")){
+      alert("Please Log In...")
+      this.router.navigateByUrl("")
+    }
   }
 
   deposit(){
@@ -60,8 +69,6 @@ else{
     }
  }
 
-
-
  withdraw(){
 
   var acno = this.withdrawForm.value.acno1
@@ -80,5 +87,25 @@ if(this.withdrawForm.valid){
   }
 } 
 
+//delete from parent
+deletefromParent(){
+  this.acno= JSON.parse(localStorage.getItem("currentAcno")||'')
+}
 
+//logout
+logout(){
+  localStorage.removeItem("currentUser")
+  localStorage.removeItem("currentAcno")
+  this.router.navigateByUrl("")
+}
+
+//onCancel
+onCancel(){
+  this.acno=""
+}
+
+//ondelete
+onDelete(event:any){
+  alert("delete account "+event)
+}
 }

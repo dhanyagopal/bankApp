@@ -2,17 +2,26 @@
 <!-- As a link -->
 <nav class="navbar navbar-light bg-dark " >
     <a class="navbar-brand  " href="#" style="color:rgb(85, 98, 237);"><b>&#169; HAFC Bank Pvt.Ltd </b></a>
-    <span class="quote text-light">Giving you freedom...</span>
-    
+    <span class="quote text-light " >Giving you freedom...</span>
+    <button (click)="deletefromParent()" style=" margin-left: 690px;" class="btn btn-danger">Delete</button>
+    <button (click)="logout()" class="btn btn-warning">Log out</button>
   </nav>
+
   <h5 style="color: white;">Welcome {{user}}</h5>
+  <h6 style="color: white;">Login Details are:{{loginDate|date:'fullDate'|uppercase}}</h6>
   <a routerLink="/transaction">Transaction History</a>
   
-  <div class="container col-md-12 mt-0">
+ 
+  <!-- child selector -->
+  <app-deleteconfirm (onDelete)="onDelete($event)" (onCancel)="onCancel()" [item]=acno></app-deleteconfirm>
+  
+  
+  <div [ngClass]="acno? 'style1':'' " class="container col-md-12 mt-0">
       <div class="d-flex justify-content-center h-100">
           <div class="card">
               <div class="card-header">
-                  <h3 class="text-center">Deposit Form</h3>
+                  <h3 appHighlight class="text-center">Deposit Form</h3>
+
                   
               </div>
               <div class="card-body">
@@ -56,11 +65,11 @@
       </div>
   </div>
   
-  <div class="container col-md-12 mt-0">
+  <div [ngClass]="acno? 'style1':'' " class="container col-md-12 mt-0">
     <div class="d-flex justify-content-center h-100">
         <div class="card">
             <div class="card-header">
-                <h3 class="text-center">Withdraw Form</h3>
+                <h3 appHighlight class="text-center">Withdraw Form</h3>
                 
             </div>
             <div class="card-body">
@@ -88,7 +97,7 @@
                       <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-user"></i></span>
                       </div>
-                      <input type="text" name="amount" formControlName="amount1" class="form-control" placeholder="amount1" id="login_amt" required>
+                      <input type="text" name="amount" formControlName="amount1" class="form-control" placeholder="amount" id="login_amt" required>
                       
                   </div>
 

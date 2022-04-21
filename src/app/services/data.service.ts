@@ -14,7 +14,63 @@ database:any = {
     1001:{acno:1001,uname:"vineeth",password:1001,balance:3000,transaction:[]},
     1002:{acno:1002,uname:"shyam",password:1002,balance:7000,transaction:[]},
   }
-  constructor() { }
+
+
+  constructor() {
+      this.getDetails()
+   }
+
+
+//to save data in local storage
+// saveDetails(){
+//   localStorage.setItem("database",JSON.stringify(this.database))
+
+//   if(this.currentAcno){
+//     localStorage.setItem("currentAcno",JSON.stringify(this.currentAcno))
+//   }
+//   if(this.currentUser){
+//     localStorage.setItem("currentUser",JSON.stringify(this.currentUser))
+//   }
+// }
+
+saveDetails(){
+  localStorage.setItem("database",JSON.stringify(this.database))
+
+  if(this.currentAcno){
+    localStorage.setItem("currentAcno",JSON.stringify(this.currentAcno))
+  }
+  if(this.currentUser){
+    localStorage.setItem("currentUser",JSON.stringify(this.currentUser))
+  }
+}
+
+ 
+//to get data from local storage
+// getDetails(){
+//   if(localStorage.getItem("database")){
+//     this.database=JSON.parse(localStorage.getItem("database")||'')
+//   }
+//   if(localStorage.getItem("currentAcno")){
+//     this.database=JSON.parse(localStorage.getItem("currentAcno")||'')
+//   }
+//   if(localStorage.getItem("currentUser")){
+//     this.currentUser=JSON.parse(localStorage.getItem("currentUser")||'')
+//   }
+// }
+
+getDetails(){
+  if(localStorage.getItem("database")){
+    this.database=JSON.parse(localStorage.getItem("database")||'')
+  }
+  if(localStorage.getItem("currentAcno")){
+    this.currentAcno=JSON.parse(localStorage.getItem("currentAcno")||'')
+  }
+  if(localStorage.getItem("currentUser")){
+    this.currentUser=JSON.parse(localStorage.getItem("currentUser")||'')
+  }
+}
+
+
   //register
   register(uname:any, acno:any, password:any){
 
@@ -35,6 +91,7 @@ database:any = {
         transaction:[]
       }
        console.log(database);
+       this.saveDetails()
        return true
        
     }
@@ -53,8 +110,9 @@ login(acno:any,pswd:any){
     if(pswd == database[acno]["password"]){
       this.currentUser = database[acno]["uname"]//to send user name to dashboard.ts
       this.currentAcno = acno //to insert the current logined user acno into the var currentAcno(to display in transction history )
-       //already exist in db
-      return true
+      this.saveDetails()
+      //already exist in db
+       return true
     }
     else{
       alert("Incorrect password!!!")
@@ -66,7 +124,6 @@ login(acno:any,pswd:any){
     alert("User doesnot exist!!!!")
     return false
   }
-
 }
 
 //deposit
@@ -84,7 +141,7 @@ deposit(acno:any,pswd:any,amt:any){
         amount:amount    
       })
      // console.log(database);
-      
+      this.saveDetails()
       return database[acno]["balance"]
     }
     else{
@@ -114,7 +171,7 @@ withdraw(acno:any,pswd:any,amt:any){
             amount:amount    
           })
           //console.log(database);
-          
+          this.saveDetails()
           return database[acno]["balance"]
         }
         else{
