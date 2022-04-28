@@ -10,7 +10,7 @@
   <h5 style="color: white;">Welcome {{user}}</h5>
   <h6 style="color: white;">Login Details are:{{loginDate|date:'fullDate'|uppercase}}</h6>
   <a routerLink="/transaction">Transaction History</a>
-  
+  <!-- <app-animationdemo></app-animationdemo> -->
  
   <!-- child selector -->
   <app-deleteconfirm (onDelete)="onDelete($event)" (onCancel)="onCancel()" [item]=acno></app-deleteconfirm>
