@@ -12,6 +12,7 @@ import { TransactionComponent } from './transaction/transaction.component';
 import { DeleteconfirmComponent } from './deleteconfirm/deleteconfirm.component';
 import { HighlightDirective } from './directives/highlight.directive';
 import { AnimationdemoComponent } from './animationdemo/animationdemo.component';
+import { HttpClientModule } from '@angular/common/http'
 //import { HighlightDirective } from './highlight.directive';
 
 @NgModule({
@@ -30,7 +31,8 @@ import { AnimationdemoComponent } from './animationdemo/animationdemo.component'
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
     
   ],
   providers: [],

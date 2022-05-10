@@ -39,36 +39,60 @@ export class DashboardComponent implements OnInit {
   loginDate:any
 
   constructor(private ds:DataService,private fb:FormBuilder,private router:Router) {
-   this.user=this.ds.currentUser //to pass username to dashboard(html)page while loading the page,add this inside constructor
+   //this.user=this.ds.currentUser //to pass username to dashboard(html)page while loading the page,add this inside constructor
+   this.user=JSON.parse(localStorage.getItem('currentUser') || '')
    this.loginDate= new Date()
    }
 
    
   ngOnInit(): void {
-    if(!localStorage.getItem("currentAcno")){
-      alert("Please Log In...")
-      this.router.navigateByUrl("")
-    }
+    // if(!localStorage.getItem("currentAcno")){
+    //   alert("Please Log In...")
+    //   this.router.navigateByUrl("")
+    // }
   }
 
+  //deposit -after integration
   deposit(){
-  // alert("Deposit Clicked!!!!")
-
+  
   var acno = this.depositForm.value.acno
   var pswd = this.depositForm.value.pswd
   var amount = this.depositForm.value.amount
-
 if(this.depositForm.valid){
-  const result = this.ds.deposit(acno,pswd,amount)
-  if(result){
-    alert(amount +"successfully deposited..And new balance is:" + result)
-      }
+  this.ds.deposit(acno,pswd,amount)
+  .subscribe((result:any)=>{
+    if(result){
+      alert(result.message)
+    }
+  },
+ (result)=>{
+  alert(result.error.message)
+ })
 }
 else{
   alert("invalid form")
     }
  }
 
+//  deposit(){
+//   // alert("Deposit Clicked!!!!")
+
+//   var acno = this.depositForm.value.acno
+//   var pswd = this.depositForm.value.pswd
+//   var amount = this.depositForm.value.amount
+// //calling deposit in dataservice
+// if(this.depositForm.valid){
+//   const result = this.ds.deposit(acno,pswd,amount)
+//   if(result){
+//     alert(amount +"successfully deposited..And new balance is:" + result)
+//       }
+// }
+// else{
+//   alert("invalid form")
+//     }
+//  }
+
+//withdraw after integration
  withdraw(){
 
   var acno = this.withdrawForm.value.acno1
@@ -76,16 +100,38 @@ else{
   var amount = this.withdrawForm.value.amount1
 
 if(this.withdrawForm.valid){
-  const result = this.ds.withdraw(acno,pswd,amount)
- if(result){
-   alert(amount +"successfully debitted..And new balance is:" + result)
-     }
-
+ this.ds.withdraw(acno,pswd,amount)
+ .subscribe((result:any)=>{
+  if(result){
+    alert(result.message)
   }
+},
+(result)=>{
+alert(result.error.message)
+})
+}
   else{
     alert("invalid form")
   }
 } 
+
+// withdraw(){
+
+//   var acno = this.withdrawForm.value.acno1
+//   var pswd = this.withdrawForm.value.pswd1
+//   var amount = this.withdrawForm.value.amount1
+
+// if(this.withdrawForm.valid){
+//   const result = this.ds.withdraw(acno,pswd,amount)
+//  if(result){
+//    alert(amount +"successfully debitted..And new balance is:" + result)
+//      }
+
+//   }
+//   else{
+//     alert("invalid form")
+//   }
+// } 
 
 //delete from parent
 deletefromParent(){
@@ -104,8 +150,24 @@ onCancel(){
   this.acno=""
 }
 
-//ondelete
+//ondelete-after integration
 onDelete(event:any){
-  alert("delete account "+event)
-}
+  //calling onDelete in dataservice
+  this.ds.onDelete(event)
+  .subscribe((result:any)=>{
+   if(result){
+     alert(result.message)
+     this.router.navigateByUrl("")
+   }
+ },
+ (result:any)=>{
+ alert(result.error.message)
+ })
+ }
+
+//ondelete
+// onDelete(event:any){
+//   alert("delete account "+event)
+// }
+
 }

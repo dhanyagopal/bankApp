@@ -45,28 +45,54 @@ export class RegisterComponent implements OnInit {
   // }
   
 
-  //register using registerForms method
+  //register -after integrating with db
   register(){
-    //bind variables using model variables
+   
     var acno =this.registerForm.value.acno
     var pswd = this.registerForm.value.pswd
     var uname = this.registerForm.value.uname
-    
     if(this.registerForm.valid){
+    //asynchronous
+     this.db.register(uname,acno,pswd)
+     .subscribe((result:any)=>{
+      if(result){
+        alert(result.message)
+        this.router.navigateByUrl("")
+      }
+     },
+     (result)=>{
+      alert(result.error.message)
+     })
 
-    const result = this.db.register(uname,acno,pswd)
-
-    if(result){
-      alert("successfully registered!!!")
-      this.router.navigateByUrl("")
     }
-    else{
-      alert("Account already exist.. please login")
-      this.router.navigateByUrl("")
-    }
-  }
   else{
     alert("invalid form")
   }
  }
 }
+
+// //register using registerForms method
+// register(){
+//   //bind variables using model variables
+//   var acno =this.registerForm.value.acno
+//   var pswd = this.registerForm.value.pswd
+//   var uname = this.registerForm.value.uname
+  
+//   if(this.registerForm.valid){
+//   //asynchronous
+//   const result = this.db.register(uname,acno,pswd)
+
+//   if(result){
+//     alert("successfully registered!!!")
+//     this.router.navigateByUrl("")
+//   }
+//   else{
+//     alert("Account already exist.. please login")
+//     this.router.navigateByUrl("")
+//   }
+// }
+// else{
+//   alert("invalid form")
+// }
+// }
+// }

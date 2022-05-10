@@ -73,27 +73,56 @@ export class LoginComponent implements OnInit {
 
 // }
 
-//login -for loging in using data service
+//login -after db integration
 login(){
     
   var acno = this.loginForm.value.acno
   var pswd = this.loginForm.value.pswd
 
-
 if(this.loginForm.valid){
   //call login in dataService
-  const result = this.ds.login(acno,pswd)
+   this.ds.login(acno,pswd)
+   .subscribe((result:any)=>{
+    if(result){
+      localStorage.setItem('currentAcno',JSON.stringify(result.currentAcno))
+      localStorage.setItem('currentUser',JSON.stringify(result.currentUser))
+      localStorage.setItem('token',JSON.stringify(result.token))
 
-  if(result){
-    alert("Login successfull!!!")
-    this.router.navigateByUrl("dashboard")
-   }
+      alert(result.message)
+      this.router.navigateByUrl("dashboard")
+     }
+   },
+   (result)=>{
+    alert(result.error.message)
+   }) 
   }
   else{
     alert("invalid form")
    }
   }
 }
+
+//login -for loging in using data service
+// login(){
+    
+//   var acno = this.loginForm.value.acno
+//   var pswd = this.loginForm.value.pswd
+
+
+// if(this.loginForm.valid){
+//   //call login in dataService
+//   const result = this.ds.login(acno,pswd)
+
+//   if(result){
+//     alert("Login successfull!!!")
+//     this.router.navigateByUrl("dashboard")
+//    }
+//   }
+//   else{
+//     alert("invalid form")
+//    }
+//   }
+// }
 
 //login using template referencing variable #
 // login(a:any,p:any){
